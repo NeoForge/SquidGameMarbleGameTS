@@ -5,7 +5,7 @@
 
 let playerTurn = true;
 let inputMarble;
-
+let gameEnded = false;
 class Player {
     constructor(name, hand, marbleInBag) {
         this.ChoseNumberOfMarbleInHand = (nb) => {
@@ -19,6 +19,7 @@ class Player {
         };
         this.CheckDeath = () => {
             if (this.marbleInBag <= 0) {
+                gameEnded = true;
                 return console.log(this.name + " est mort");
             }
             else {
@@ -121,8 +122,15 @@ let Adversaire = new Player("Adversaire", 0, 10);
 
 
 function putMarbleInHand() {
-    Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
-    Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+    if(!gameEnded)
+    {
+        Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
+        Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+    }
+    else
+    {
+        console.log("La partie est terminée");
+    }
 }
 
 CreatePairAndImpairButtonInBody();
