@@ -11,7 +11,7 @@ let inputMarble = document.querySelector("#marbleChallenger");
 class Player {
     constructor(name, hand, marbleInBag) {
         this.ChoseNumberOfMarbleInHand = (nb) => {
-            if (nb < this.marbleInBag) {
+            if (nb <= this.marbleInBag) {
                 this.hand = nb;
                 return nb;
             }
@@ -21,8 +21,8 @@ class Player {
         };
         this.CheckDeath = () => {
             if (this.marbleInBag <= 0) {
-                return console.log("Vous êtes mort");
                 gameEnded = true;
+                return console.log("Vous êtes mort");
             }
             else {
                 return console.log("Vous êtes vivant");
@@ -49,8 +49,15 @@ function TransferMarble(Giver, Receiver) {
     Giver.CheckDeath();
     Receiver.CheckDeath();
     inputMarble.max = Challenger.marbleInBag.toString();
+    inputMarble.value = "1";
+    inputMarble.disabled = false;
+    validateButton.disabled = false;
+    pairButton.disabled = true;
+    impairButton.disabled = true;
     console.log("After Transfer(Challenger) : " + Challenger.marbleInBag + " et dans la main " + Challenger.hand);
     console.log("After Transfer(Adversaire) : " + Adversaire.marbleInBag + " et dans la main " + Adversaire.hand);
+    Challenger.hand = 0;
+    Adversaire.hand = 0;
 }
 function CompareMarbleInHand(Challenger, Adversaire, choice) {
     if (Challenger.hand == 0 || Adversaire.hand == 0) {
@@ -118,8 +125,25 @@ function putMarbleInHand() {
     if (!gameEnded) {
         Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
         Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+        pairButton.disabled = false;
+        impairButton.disabled = false;
+        validateButton.disabled = true;
+        inputMarble.disabled = true;
     }
     else {
         console.log("La partie est terminée");
+        pairButton.disabled = true;
+        impairButton.disabled = true;
+        validateButton.disabled = true;
+    }
+}
+function MinMaxValueInInput(nb) {
+    if (nb.value != "") {
+        if (parseInt(nb.value) < parseInt(nb.min)) {
+            nb.value = nb.min;
+        }
+        if (parseInt(nb.value) > parseInt(nb.max)) {
+            nb.value = nb.max;
+        }
     }
 }

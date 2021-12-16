@@ -3,44 +3,36 @@
 // 2 joueur , chaque joueur posséde un sac avec 10 billes , avant de débuter chaque joueur prend un nombre de billes  entre 1 et 10. Ensuite un challenger doit deviner si le nombre de billes dans la main de son adversaire est pair ou impair , si il a raison alors il prend le même nombre de bille qu'il a dans la main a son adversaire . Si il perd l'adversaire prend l'équivalent du nombre qu'il a dans la main au challenger.
 let playerTurn = true;
 let gameEnded = false;
-let pairButton = document.querySelector(".pairButton") as HTMLElement;
-let impairButton = document.querySelector(".impairButton")as HTMLElement;
-let validateButton = document.querySelector(".validateButton")as HTMLElement;
+let pairButton = document.querySelector(".pairButton") as HTMLButtonElement;
+let impairButton = document.querySelector(".impairButton") as HTMLButtonElement;
+let validateButton = document.querySelector(".validateButton") as HTMLButtonElement;
 let inputMarble = document.querySelector("#marbleChallenger") as HTMLInputElement;
-class Player 
-{
-    name : string;
-    hand : number;
-    marbleInBag : number;
-    constructor(name : string, hand : number, marbleInBag : number)
-    {
+class Player {
+    name: string;
+    hand: number;
+    marbleInBag: number;
+    constructor(name: string, hand: number, marbleInBag: number) {
         this.name = name;
         this.hand = hand;
         this.marbleInBag = marbleInBag;
     }
 
-    ChoseNumberOfMarbleInHand = (nb : number) =>
-    {
-        if(nb < this.marbleInBag)
-        {
+    ChoseNumberOfMarbleInHand = (nb: number) => {
+        if (nb <= this.marbleInBag) {
             this.hand = nb;
             return nb;
         }
-        else
-        {
+        else {
             return console.log(this.name + " Vous n'avez pas assez de billes dans votre sac");
         }
     }
 
-    CheckDeath = () =>
-    {
-        if(this.marbleInBag <= 0)
-        {
-            return console.log("Vous êtes mort");
+    CheckDeath = () => {
+        if (this.marbleInBag <= 0) {
             gameEnded = true;
+            return console.log("Vous êtes mort");
         }
-        else
-        {
+        else {
             return console.log("Vous êtes vivant");
         }
     }
@@ -48,16 +40,13 @@ class Player
 let Challenger = new Player("Challenger", 0, 10);
 let Adversaire = new Player("Adversaire", 0, 10);
 
-function TransferMarble(Giver:Player,Receiver:Player)
-{
-    if(Giver.marbleInBag < Receiver.hand)
-    {
+function TransferMarble(Giver: Player, Receiver: Player) {
+    if (Giver.marbleInBag < Receiver.hand) {
         Receiver.marbleInBag += Giver.marbleInBag;
         Giver.marbleInBag = 0;
         Giver.CheckDeath();
     }
-    else
-    {
+    else {
         Receiver.marbleInBag += Receiver.hand;
         Giver.marbleInBag -= Receiver.hand;
         Giver.CheckDeath();
@@ -65,10 +54,17 @@ function TransferMarble(Giver:Player,Receiver:Player)
     Giver.CheckDeath();
     Receiver.CheckDeath();
     inputMarble.max = Challenger.marbleInBag.toString();
+    inputMarble.value = "1";
+    inputMarble.disabled = false;
+    validateButton.disabled = false;
+    pairButton.disabled = true;
+    impairButton.disabled = true;
     console.log("After Transfer(Challenger) : " + Challenger.marbleInBag + " et dans la main " + Challenger.hand);
     console.log("After Transfer(Adversaire) : " + Adversaire.marbleInBag + " et dans la main " + Adversaire.hand);
-} 
-function CompareMarbleInHand(Challenger : Player, Adversaire:Player, choice:string) {
+    Challenger.hand = 0;
+    Adversaire.hand = 0;
+}
+function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: string) {
 
     if (Challenger.hand == 0 || Adversaire.hand == 0) {
         return console.log("Veuillez mettre des billes dans votre main");
@@ -137,14 +133,29 @@ function CompareMarbleInHand(Challenger : Player, Adversaire:Player, choice:stri
 
 }
 function putMarbleInHand() {
-    if(!gameEnded)
-    {
+    if (!gameEnded) {
         Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
         Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+        pairButton.disabled = false;
+        impairButton.disabled = false;
+        validateButton.disabled = true;
+        inputMarble.disabled = true;
     }
-    else
-    {
+    else {
         console.log("La partie est terminée");
+        pairButton.disabled = true;
+        impairButton.disabled = true;
+        validateButton.disabled = true;
     }
 }
 
+function MinMaxValueInInput(nb : any) {
+    if (nb.value != "") {
+        if (parseInt(nb.value) < parseInt(nb.min)) {
+            nb.value = nb.min;
+        }
+        if (parseInt(nb.value) > parseInt(nb.max)) {
+            nb.value = nb.max;
+        }
+    }
+}
