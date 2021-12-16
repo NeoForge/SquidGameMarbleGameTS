@@ -5,10 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/index.css">
     <title>Document</title>
 </head>
 
 <body>
+    <div id="ButtonPlace">
+        <input type="number" name="marble" id="marbleChallenger" value="1" max="10" min="1">
+        <button class="validateButton" onclick="putMarbleInHand()">Valider</button>
+        <button class="pairButton" onclick="CompareMarbleInHand(Challenger, Adversaire, 'pair')">Pair</button>
+        <button class="impairButton" onclick="CompareMarbleInHand(Challenger, Adversaire, 'impair')">Impair</button>
+    </div>
+    <div  class="DivDesMain">
+        <img src="../assets/mainOuverte.png" class="mainGauche">
+        <img src="../assets/mainOuverte.png" class="mainDroite">
+    </div>
     <script src="../dist/index2.js"></script>
 </body>
 

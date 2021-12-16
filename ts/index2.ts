@@ -1,11 +1,12 @@
 //SQUID GAME
 //Règlements :
 // 2 joueur , chaque joueur posséde un sac avec 10 billes , avant de débuter chaque joueur prend un nombre de billes  entre 1 et 10. Ensuite un challenger doit deviner si le nombre de billes dans la main de son adversaire est pair ou impair , si il a raison alors il prend le même nombre de bille qu'il a dans la main a son adversaire . Si il perd l'adversaire prend l'équivalent du nombre qu'il a dans la main au challenger.
-
 let playerTurn = true;
-let inputMarble:any;
 let gameEnded = false;
-
+let pairButton = document.querySelector(".pairButton") as HTMLElement;
+let impairButton = document.querySelector(".impairButton")as HTMLElement;
+let validateButton = document.querySelector(".validateButton")as HTMLElement;
+let inputMarble = document.querySelector("#marbleChallenger") as HTMLInputElement;
 class Player 
 {
     name : string;
@@ -44,10 +45,8 @@ class Player
         }
     }
 }
-
 let Challenger = new Player("Challenger", 0, 10);
 let Adversaire = new Player("Adversaire", 0, 10);
-
 
 function TransferMarble(Giver:Player,Receiver:Player)
 {
@@ -65,11 +64,10 @@ function TransferMarble(Giver:Player,Receiver:Player)
     }
     Giver.CheckDeath();
     Receiver.CheckDeath();
-    inputMarble.max = Challenger.marbleInBag;
+    inputMarble.max = Challenger.marbleInBag.toString();
     console.log("After Transfer(Challenger) : " + Challenger.marbleInBag + " et dans la main " + Challenger.hand);
     console.log("After Transfer(Adversaire) : " + Adversaire.marbleInBag + " et dans la main " + Adversaire.hand);
 } 
-
 function CompareMarbleInHand(Challenger : Player, Adversaire:Player, choice:string) {
 
     if (Challenger.hand == 0 || Adversaire.hand == 0) {
@@ -138,9 +136,6 @@ function CompareMarbleInHand(Challenger : Player, Adversaire:Player, choice:stri
     }
 
 }
-
-
-//Select the number of Marble in hand
 function putMarbleInHand() {
     if(!gameEnded)
     {
@@ -152,27 +147,4 @@ function putMarbleInHand() {
         console.log("La partie est terminée");
     }
 }
-//Create HTML DOM
-CreatePairAndImpairButtonInBody();
-function CreatePairAndImpairButtonInBody() {
-    let body = document.querySelector("body")as HTMLBodyElement;
-    let pairButton = document.createElement("button");
-    let impairButton = document.createElement("button");
-    let ValidateButton = document.createElement("button");
-    inputMarble = document.createElement("input");
-    ValidateButton.innerHTML = "Valider";
-    impairButton.innerHTML = "impair";
-    pairButton.innerHTML = "pair";
-    inputMarble.setAttribute("type", "number");
-    inputMarble.id = "marbleChallenger";
-    inputMarble.value = 1;
-    inputMarble.min = 1;
-    inputMarble.max = Challenger.marbleInBag;
-    pairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, "pair"); });
-    impairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, "impair"); });
-    ValidateButton.addEventListener("click", () => { putMarbleInHand(); });
-    body.appendChild(inputMarble);
-    body.appendChild(ValidateButton);
-    body.appendChild(pairButton);
-    body.appendChild(impairButton);
-}
+
