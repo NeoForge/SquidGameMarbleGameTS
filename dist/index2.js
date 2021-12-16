@@ -141,9 +141,22 @@ function MinMaxValueInInput(nb) {
     if (nb.value != "") {
         if (parseInt(nb.value) < parseInt(nb.min)) {
             nb.value = nb.min;
+            return console.log("Vous ne pouvez pas mettre moins de " + nb.min + " billes");
         }
         if (parseInt(nb.value) > parseInt(nb.max)) {
             nb.value = nb.max;
+            return console.log("Vous ne pouvez pas mettre plus de " + nb.max + " billes");
         }
     }
+}
+InitFunctionInDom();
+function InitFunctionInDom() {
+    inputMarble.addEventListener("input", () => { MinMaxValueInInput(inputMarble); });
+    pairButton.addEventListener("click", () => {
+        CompareMarbleInHand(Challenger, Adversaire, "pair");
+    });
+    impairButton.addEventListener("click", () => {
+        CompareMarbleInHand(Challenger, Adversaire, "impair");
+    });
+    validateButton.addEventListener("click", putMarbleInHand);
 }

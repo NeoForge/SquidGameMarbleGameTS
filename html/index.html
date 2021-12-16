@@ -11,12 +11,10 @@
 
 <body>
     <div id="ButtonPlace">
-        <input type="number" name="marble" id="marbleChallenger" value="1" max="10" min="1" onkeyup="MinMaxValueInInput(this)">
-        <button class="validateButton btn-success" onclick="putMarbleInHand()">Valider</button>
-        <button class="pairButton btn-dark" disabled="true"
-            onclick="CompareMarbleInHand(Challenger, Adversaire, 'pair')">Pair</button>
-        <button class="impairButton btn-dark" disabled="true"
-            onclick="CompareMarbleInHand(Challenger, Adversaire, 'impair')">Impair</button>
+        <input type="number" name="marble" id="marbleChallenger" value="1" max="10" min="1">
+        <button class="validateButton btn-success">Valider</button>
+        <button class="pairButton btn-dark" disabled="true">Pair</button>
+        <button class="impairButton btn-dark" disabled="true">Impair</button>
     </div>
     <div class="DivDesMain">
         <img src="../assets/mainOuverte.png" class="mainGauche">
