@@ -57,18 +57,17 @@ html {
     position: fixed;
     z-index: 1;
   }
-  
   img.handLeft {
     transform: rotate(90deg);
     left: 0px;
-    height: 100%;
+    height: 80%;
     transition: all 10ms ease-in-out;
   }
   
   img.handRight {
     transform: rotate(270deg);
     right: 0px;
-    height: 100%;
+    height: 80%;
     transition: all 10ms ease-in-out;
   }
   
@@ -110,14 +109,7 @@ html {
     -webkit-appearance: none;
     margin: 0;
   }
-  
-  div.inputs input[type=number] {
-    width: 105px;
-    background: url(../assets/img/bgInput.png?h=9242e910a9a38f8acde45c2935f2042d);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-  }
-  
+    
   @media all and (max-width:1299px) {
     div.progressBar img {
       width: 45px;
@@ -139,7 +131,7 @@ html {
   
   @media all and (max-width:940px) {
     img.handLeft, img.handRight {
-      height: 75%;
+      height: 55%;
     }
   }
   
@@ -157,7 +149,7 @@ html {
   
   @media all and (max-width:650px) {
     img.handLeft, img.handRight {
-      height: 35%;
+      height: 15%;
     }
   }
   

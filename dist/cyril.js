@@ -1,27 +1,5 @@
 "use strict";
 window.addEventListener("load", function () {
-    const inputNumber = document.querySelector("input[type=number]");
-    const inputEven = document.querySelector("input.even");
-    const inputOdd = document.querySelector("input.odd");
-    const handLeft = document.querySelector("img.handLeft");
-    const handRight = document.querySelector("img.handRight");
-    /*
-       _____ ______ _____ _    _ _____  _____ _________     __
-      / ____|  ____/ ____| |  | |  __ \|_   _|__   __\ \   / /
-     | (___ | |__ | |    | |  | | |__) | | |    | |   \ \_/ /
-      \___ \|  __|| |    | |  | |  _  /  | |    | |    \   /
-      ____) | |___| |____| |__| | | \ \ _| |_   | |     | |
-     |_____/|______\_____|\____/|_|  \_\_____|  |_|     |_|
-                                                              
-                                                              
-    */
-    /* ACTION ON INPUT NUMBER */
-    inputNumber.addEventListener("input", function (evt) {
-        if (parseInt(inputNumber.value) < inputNumber.getAttribute("min") || parseInt(inputNumber.value) > inputNumber.getAttribute("max")) {
-            alert(`Value between ${inputNumber.getAttribute("min")} and ${inputNumber.getAttribute("max")} expected bro'.`);
-            inputNumber.value = "";
-        }
-    });
     /*
                _   _ _____ __  __      _    _          _   _ _____
          /\   | \ | |_   _|  \/  |    | |  | |   /\   | \ | |  __ \
@@ -68,29 +46,25 @@ window.addEventListener("load", function () {
             toggleHand(element);
         }
         var moveMax = Math.abs(parseInt(element.getBoundingClientRect().left)) / 10;
-        console.log(moveMax);
-        var move2 = 0;
         interval = window.setInterval(() => {
             var posHand = element.getBoundingClientRect(); // i defined my hand coordinates
             if (classElmt == "handLeft") {
-                if (posHand.left < 0 && move2 < moveMax) {
+                if (posHand.left <= -10) {
                     var newPos = parseInt(window.getComputedStyle(element).getPropertyValue('margin-left')) + 10;
                     element.style.marginLeft = newPos + "px";
-                    move2++;
                 }
                 else {
-                    console.log("done");
                     clearInterval(interval);
                 }
             }
             else {
-                console.log(posHand.right > window.screen.width);
-                if (posHand.right - parseInt(window.getComputedStyle(element).getPropertyValue('margin-right')) - 120 >= window.screen.width) {
+                console.log(posHand.right > window.screen.width - 10);
+                if (posHand.right - 10 > window.screen.width) {
                     var newPos = parseInt(window.getComputedStyle(element).getPropertyValue('margin-right')) + 10;
                     element.style.marginRight = newPos + "px";
                 }
                 else {
-                    console.log("done");
+                    clearInterval(interval);
                 }
             }
         }, 50);
@@ -149,7 +123,6 @@ window.addEventListener("load", function () {
             });
         }, 50);
     }
-    removeMarbles("barUser1", 3);
-    //addMarbles("barUser2",8);
-    var interval = window.setInterval(function () { hideHand("handLeft"); }, 50); // HIDE HAND
+    removeMarbles("barUser2", 3);
+    var interval = window.setInterval(function () { hideHand("handRight"); }, 25); // HIDE HAND
 });

@@ -1,28 +1,4 @@
 window.addEventListener("load", function(){
-    const inputNumber:any = document.querySelector("input[type=number]");
-    const inputEven:any =  document.querySelector("input.even");
-    const inputOdd:any =  document.querySelector("input.odd");
-
-    const handLeft:any =  document.querySelector("img.handLeft");
-    const handRight:any =  document.querySelector("img.handRight");
-/*
-   _____ ______ _____ _    _ _____  _____ _________     __
-  / ____|  ____/ ____| |  | |  __ \|_   _|__   __\ \   / /
- | (___ | |__ | |    | |  | | |__) | | |    | |   \ \_/ / 
-  \___ \|  __|| |    | |  | |  _  /  | |    | |    \   /  
-  ____) | |___| |____| |__| | | \ \ _| |_   | |     | |   
- |_____/|______\_____|\____/|_|  \_\_____|  |_|     |_|   
-                                                          
-                                                          
-*/ 
-    /* ACTION ON INPUT NUMBER */
-    inputNumber.addEventListener("input", function(evt:Event){
-         if(parseInt(inputNumber.value)<inputNumber.getAttribute("min") || parseInt(inputNumber.value)>inputNumber.getAttribute("max")){
-            alert(`Value between ${inputNumber.getAttribute("min")} and ${inputNumber.getAttribute("max")} expected bro'.`)
-            inputNumber.value = "";
-        }
-    });
-
 /*
            _   _ _____ __  __      _    _          _   _ _____  
      /\   | \ | |_   _|  \/  |    | |  | |   /\   | \ | |  __ \ 
@@ -72,27 +48,24 @@ window.addEventListener("load", function(){
         }
 
         var moveMax:number = Math.abs(parseInt(element.getBoundingClientRect().left))/10;
-        console.log(moveMax);
-        var move2:number = 0;
+
         interval = window.setInterval(()=>{
             var posHand:any = element.getBoundingClientRect(); // i defined my hand coordinates
             if(classElmt=="handLeft"){
-                if(posHand.left<0 && move2<moveMax){
+                if(posHand.left<=-10){
                     var newPos:number = parseInt(window.getComputedStyle(element).getPropertyValue('margin-left')) + 10;
                     element.style.marginLeft = newPos+"px";
-                    move2++;
                 }else{
-                    console.log("done");
                     clearInterval(interval);
                 }
             }else{
-                console.log(posHand.right>window.screen.width);
+                console.log(posHand.right>window.screen.width-10);
                 
-                if(posHand.right-parseInt(window.getComputedStyle(element).getPropertyValue('margin-right'))-120>=window.screen.width){
+                if(posHand.right-10>window.screen.width){
                     var newPos:number = parseInt(window.getComputedStyle(element).getPropertyValue('margin-right')) + 10;
                     element.style.marginRight = newPos+"px";
                 }else{
-                    console.log("done");
+                    clearInterval(interval);
                 }
             }
         }, 50);
@@ -155,9 +128,8 @@ window.addEventListener("load", function(){
         }, 50);
     }
 
-    removeMarbles("barUser1",3);
-    //addMarbles("barUser2",8);
-    var interval:any = window.setInterval(function(){ hideHand("handLeft") }, 50); // HIDE HAND
+    removeMarbles("barUser2",3);
+    var interval:any = window.setInterval(function(){ hideHand("handRight") }, 25); // HIDE HAND
 
 });
 
