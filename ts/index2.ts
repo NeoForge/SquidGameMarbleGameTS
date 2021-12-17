@@ -133,9 +133,21 @@ function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: str
     }
 }
 function putMarbleInHand() {
+    
     if (!gameEnded) {
         Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
-        Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+        if(Challenger.marbleInBag>=10)
+        {
+            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag/2) + 1);
+        }
+        else if(Challenger.marbleInBag<5)
+        {
+            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Challenger.marbleInBag) + 1);
+        }
+        else
+        {
+            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
+        }
         pairButton.disabled = false;
         impairButton.disabled = false;
         validateButton.disabled = true;
