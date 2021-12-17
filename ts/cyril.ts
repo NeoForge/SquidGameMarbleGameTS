@@ -83,7 +83,11 @@ window.addEventListener("load", function(){
                                                                          
 */
     function removeMarbles(barUserClass:string,nb:number){
-        var billeList:any = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
+        if(barUserClass=="barUser2"){
+            var billeList:any = document.querySelectorAll(`div.${barUserClass} img:nth-child(-n+${nb})`);
+        }else{
+            var billeList:any = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
+        }
         billeList.forEach(function (bille:any){
             bille.style.cssText="transform: rotate(360deg); transition:all 100ms ease-in-out;";
             bille.style.opacity = "0.9";
@@ -106,8 +110,6 @@ window.addEventListener("load", function(){
             var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
             var node:any =  document.querySelector(`div.barUser1`);
             node.innerHTML += '<img class="billeUser hiddenMarbles" src="../assets/img/bille-1.png" style="opacity:0.1;transition:all 50ms ease-in-out;">';
-
-
         }else{
             var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
             var node:any =  document.querySelector(`div.barUser2`);

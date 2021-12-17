@@ -80,7 +80,12 @@ window.addEventListener("load", function () {
                                                                              
     */
     function removeMarbles(barUserClass, nb) {
-        var billeList = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
+        if (barUserClass == "barUser2") {
+            var billeList = document.querySelectorAll(`div.${barUserClass} img:nth-child(-n+${nb})`);
+        }
+        else {
+            var billeList = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
+        }
         billeList.forEach(function (bille) {
             bille.style.cssText = "transform: rotate(360deg); transition:all 100ms ease-in-out;";
             bille.style.opacity = "0.9";
