@@ -33,7 +33,7 @@ window.addEventListener("load", function(){
                                                                 
                                                                 
 */
-    // CHANGE PICTURES HANDS
+    // DO NOT CALL THIS FUNCTION
     function toggleHand(classElmt:any):void{
         classElmt.src = (classElmt.src=="../assets/img/mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png";
     }
@@ -64,7 +64,7 @@ window.addEventListener("load", function(){
         }
     }
 
-    // SHOW HAND
+    // DO NOT CALL THIS FUNCTION
     function showHand(classElmt:any, changeHand:boolean):void{
         var element:any = document.querySelector(`img.${classElmt}`); // i defined my element
         var posHand:any = element.getBoundingClientRect(); // i defined my hand coordinates
@@ -104,7 +104,7 @@ window.addEventListener("load", function(){
                                                                          
                                                                          
 */
-    function hideMarbles(barUserClass:string,nb:number){
+    function removeMarbles(barUserClass:string,nb:number){
         var billeList:any = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
         billeList.forEach(function (bille:any){
             bille.style.cssText="transform: rotate(360deg); transition:all 100ms ease-in-out;";
@@ -112,17 +112,40 @@ window.addEventListener("load", function(){
             var anim = setInterval(function(){
                 if(parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity'))!=0){
                     bille.style.opacity = parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity'))-0.1;
-                    console.log("-0.2");
                 }
                 if(parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity'))==0){
+                    bille.remove();
+                    addMarbles(barUserClass,nb);
                     clearInterval(anim);
                 }
             }, 50);
         });
     }
 
+    // DO NOT CALL THIS FUNCTION
+    function addMarbles(barUserClass:string,nb:number){
+        var i:number = 0;
+        if(barUserClass=="barUser2"){
+            while(i<nb){
+                var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
+                var node:any =  document.querySelector(`div.${barUserClass}`);
+                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-1.png">';
+                i++;
+            }
+        }else{
+            while(i<nb){
+                var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
+                var node:any =  document.querySelector(`div.${barUserClass}`);
+                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-2.png">';
+                i++;
+            }
+        }
+        billeUser.style.background = "red";
+    }
 
-    hideMarbles("barUser1",3);
+    removeMarbles("barUser1",3);
+    //addMarbles("barUser2",8);
     var interval:any = window.setInterval(function(){ hideHand("handLeft") }, 50); // HIDE HAND
+
 });
 
