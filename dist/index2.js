@@ -8,6 +8,7 @@ let pairButton = document.querySelector(".pairButton");
 let impairButton = document.querySelector(".impairButton");
 let validateButton = document.querySelector(".validateButton");
 let inputMarble = document.querySelector("#marbleChallenger");
+let invalidChars = ["-", "+", "e", ".", ","];
 class Player {
     constructor(name, hand, marbleInBag) {
         this.ChoseNumberOfMarbleInHand = (nb) => {
@@ -149,7 +150,6 @@ function MinMaxValueInInput(nb) {
         }
     }
 }
-InitFunctionInDom();
 function InitFunctionInDom() {
     inputMarble.addEventListener("input", () => { MinMaxValueInInput(inputMarble); });
     pairButton.addEventListener("click", () => {
@@ -159,4 +159,8 @@ function InitFunctionInDom() {
         CompareMarbleInHand(Challenger, Adversaire, "impair");
     });
     validateButton.addEventListener("click", putMarbleInHand);
+    inputMarble.addEventListener("keydown", function (e) { if (invalidChars.includes(e.key)) {
+        e.preventDefault();
+    } });
 }
+InitFunctionInDom();

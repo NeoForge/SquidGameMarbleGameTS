@@ -7,6 +7,8 @@ let pairButton = document.querySelector(".pairButton") as HTMLButtonElement;
 let impairButton = document.querySelector(".impairButton") as HTMLButtonElement;
 let validateButton = document.querySelector(".validateButton") as HTMLButtonElement;
 let inputMarble = document.querySelector("#marbleChallenger") as HTMLInputElement;
+let invalidChars = ["-","+","e",".",","];
+  
 class Player {
     name: string;
     hand: number;
@@ -39,7 +41,6 @@ class Player {
 }
 let Challenger = new Player("Challenger", 0, 10);
 let Adversaire = new Player("Adversaire", 0, 10);
-
 function TransferMarble(Giver: Player, Receiver: Player) {
     if (Giver.marbleInBag < Receiver.hand) {
         Receiver.marbleInBag += Giver.marbleInBag;
@@ -130,7 +131,6 @@ function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: str
             }
         }
     }
-
 }
 function putMarbleInHand() {
     if (!gameEnded) {
@@ -148,8 +148,7 @@ function putMarbleInHand() {
         validateButton.disabled = true;
     }
 }
-
-function MinMaxValueInInput(nb : HTMLInputElement) {
+function MinMaxValueInInput(nb: HTMLInputElement) {
     if (nb.value != "") {
         if (parseInt(nb.value) < parseInt(nb.min)) {
             nb.value = nb.min;
@@ -161,10 +160,8 @@ function MinMaxValueInInput(nb : HTMLInputElement) {
         }
     }
 }
-InitFunctionInDom();
-function InitFunctionInDom()
-{
-    inputMarble.addEventListener("input",()=>{MinMaxValueInInput(inputMarble)} );
+function InitFunctionInDom() {
+    inputMarble.addEventListener("input", () => { MinMaxValueInInput(inputMarble) });
     pairButton.addEventListener("click", () => {
         CompareMarbleInHand(Challenger, Adversaire, "pair");
     });
@@ -172,4 +169,7 @@ function InitFunctionInDom()
         CompareMarbleInHand(Challenger, Adversaire, "impair");
     });
     validateButton.addEventListener("click", putMarbleInHand);
+    inputMarble.addEventListener("keydown", function(e) {if (invalidChars.includes(e.key)) {e.preventDefault();}});
 }
+InitFunctionInDom();
+
