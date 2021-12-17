@@ -115,7 +115,7 @@ window.addEventListener("load", function(){
                 }
                 if(parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity'))==0){
                     bille.remove();
-                    addMarbles(barUserClass,nb);
+                    addMarbles(barUserClass);
                     clearInterval(anim);
                 }
             }, 50);
@@ -123,22 +123,17 @@ window.addEventListener("load", function(){
     }
 
     // DO NOT CALL THIS FUNCTION
-    function addMarbles(barUserClass:string,nb:number){
-        var i:number = 0;
+    function addMarbles(barUserClass:string){
         if(barUserClass=="barUser2"){
-            while(i<nb){
-                var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
-                var node:any =  document.querySelector(`div.${barUserClass}`);
-                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-1.png">';
-                i++;
-            }
+            var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
+            var node:any =  document.querySelector(`div.barUser1`);
+            node.innerHTML += '<img class="billeUser" src="../assets/img/bille-1.png">';
+
         }else{
-            while(i<nb){
-                var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
-                var node:any =  document.querySelector(`div.${barUserClass}`);
-                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-2.png">';
-                i++;
-            }
+            var billeUser:any = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
+            var node:any =  document.querySelector(`div.barUser2`);
+            node.innerHTML += '<img class="billeUser" src="../assets/img/bille-2.png">';
+
         }
         billeUser.style.background = "red";
     }

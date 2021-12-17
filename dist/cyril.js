@@ -111,30 +111,23 @@ window.addEventListener("load", function () {
                 }
                 if (parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity')) == 0) {
                     bille.remove();
-                    addMarbles(barUserClass, nb);
+                    addMarbles(barUserClass);
                     clearInterval(anim);
                 }
             }, 50);
         });
     }
     // DO NOT CALL THIS FUNCTION
-    function addMarbles(barUserClass, nb) {
-        var i = 0;
+    function addMarbles(barUserClass) {
         if (barUserClass == "barUser2") {
-            while (i < nb) {
-                var billeUser = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
-                var node = document.querySelector(`div.${barUserClass}`);
-                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-1.png">';
-                i++;
-            }
+            var billeUser = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
+            var node = document.querySelector(`div.barUser1`);
+            node.innerHTML += '<img class="billeUser" src="../assets/img/bille-1.png">';
         }
         else {
-            while (i < nb) {
-                var billeUser = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
-                var node = document.querySelector(`div.${barUserClass}`);
-                node.innerHTML += '<img class="billeUser" src="../assets/img/bille-2.png">';
-                i++;
-            }
+            var billeUser = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
+            var node = document.querySelector(`div.barUser2`);
+            node.innerHTML += '<img class="billeUser" src="../assets/img/bille-2.png">';
         }
         billeUser.style.background = "red";
     }
