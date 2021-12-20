@@ -128,6 +128,17 @@ window.addEventListener("load", function () {
             });
         }, 50);
     }
-    removeMarbles("barUser2", 3);
+    //removeMarbles("barUser2", 3);
     var interval = window.setInterval(function () { hideHand("handRight"); }, 25); // HIDE HAND
+    function SelectNumberOfBille() {
+        let arrayOfBillesUser1 = document.querySelectorAll(`div.barUser1 img`);
+        for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+            arrayOfBillesUser1[i].addEventListener('click', function () {
+                removeMarbles("barUser1", i + 1);
+            });
+        }
+        console.log(arrayOfBillesUser1);
+        return null;
+    }
+    SelectNumberOfBille();
 });
