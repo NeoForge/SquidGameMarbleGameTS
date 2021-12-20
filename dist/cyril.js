@@ -13,6 +13,15 @@ window.addEventListener("load", function () {
     // DO NOT CALL THIS FUNCTION
     function toggleHand(classElmt) {
         classElmt.src = (classElmt.src == "../assets/img/mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png";
+        // hide count in the hand if the hand is close
+        const handLeft = document.querySelector("img.handLeft");
+        const handRight = document.querySelector("img.handRight");
+        if (handLeft.src == "../assets/img/mainFermee.png") {
+            handLeft.style.display = "none";
+        }
+        if (handRight.src == "../assets/img/mainFermee.png") {
+            handLeft.style.display = "none";
+        }
     }
     // HIDE HAND
     function hideHand(classElmt) {
@@ -128,6 +137,30 @@ window.addEventListener("load", function () {
             });
         }, 50);
     }
+    //                             L, F
+    // displayMarblesNb(    array [3, 2]    );
+    function displayMarblesNb(array) {
+        const handLeft = document.querySelector("img.handLeft");
+        const handRight = document.querySelector("img.handRight");
+        const cntLeft = document.querySelector("div.cntLeft");
+        const cntRight = document.querySelector("div.cntRight");
+        var marblesLeft = array[0];
+        var marblesRight = array[1];
+        var handPosLeft = handLeft.getBoundingClientRect();
+        var handPosRight = handRight.getBoundingClientRect();
+        var ctrHandLeft = (handPosLeft.right - handPosLeft.left) / 3;
+        var middleHandLeft = handPosLeft.top + ((handPosLeft.bottom - handPosLeft.top) / 3);
+        var ctrHandRight = (handPosRight.right - handPosRight.left) / 2;
+        var middleHandRight = handPosRight.top + ((handPosRight.bottom - handPosRight.top) / 2);
+        const cntBgLeft = "background: url('../assets/img/bille-1.png') no-repeat;background-size: contain;";
+        const cntBgRight = "background: url('../assets/img/bille-2.png') no-repeat;background-size: contain;";
+        cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft};`;
+        cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight}`;
+        cntLeft.innerHTML = marblesLeft;
+        cntRight.innerHTML = marblesRight;
+    }
     removeMarbles("barUser2", 3);
     var interval = window.setInterval(function () { hideHand("handRight"); }, 25); // HIDE HAND
+    var monTbl = [3, 2]; // handLeft, rightRight
+    displayMarblesNb(monTbl);
 });
