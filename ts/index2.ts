@@ -1,22 +1,20 @@
-//SQUID GAME
-//Règlements :
-// 2 joueur , chaque joueur posséde un sac avec 10 billes , avant de débuter chaque joueur prend un nombre de billes  entre 1 et 10. Ensuite un challenger doit deviner si le nombre de billes dans la main de son adversaire est pair ou impair , si il a raison alors il prend le même nombre de bille qu'il a dans la main a son adversaire . Si il perd l'adversaire prend l'équivalent du nombre qu'il a dans la main au challenger.
 let playerTurn = true;
 let gameEnded = false;
 let pairButton = document.querySelector(".pairButton") as HTMLButtonElement;
 let impairButton = document.querySelector(".impairButton") as HTMLButtonElement;
 let validateButton = document.querySelector(".validateButton") as HTMLButtonElement;
 let inputMarble = document.querySelector("#marbleChallenger") as HTMLInputElement;
-let invalidChars = ["-","+","e",".",","];
-  
+let invalidChars = ["-", "+", "e", ".", ","];
 class Player {
     name: string;
     hand: number;
     marbleInBag: number;
-    constructor(name: string, hand: number, marbleInBag: number) {
+    isAI: boolean;
+    constructor(name: string, hand: number, marbleInBag: number, isAI: boolean) {
         this.name = name;
         this.hand = hand;
         this.marbleInBag = marbleInBag;
+        this.isAI = isAI;
     }
 
     ChoseNumberOfMarbleInHand = (nb: number) => {
@@ -32,25 +30,23 @@ class Player {
     CheckDeath = () => {
         if (this.marbleInBag <= 0) {
             gameEnded = true;
-            return console.log("Vous êtes mort");
+            return console.log(this.name + " est mort");
         }
         else {
-            return console.log("Vous êtes vivant");
+            return console.log(this.name + " est vivant");
         }
     }
 }
-let Challenger = new Player("Challenger", 0, 10);
-let Adversaire = new Player("Adversaire", 0, 10);
+let Challenger = new Player("Challenger", 0, 10, false);
+let Adversaire = new Player("Adversaire", 0, 10, true);
 function TransferMarble(Giver: Player, Receiver: Player) {
     if (Giver.marbleInBag < Receiver.hand) {
         Receiver.marbleInBag += Giver.marbleInBag;
         Giver.marbleInBag = 0;
-        Giver.CheckDeath();
     }
     else {
         Receiver.marbleInBag += Receiver.hand;
         Giver.marbleInBag -= Receiver.hand;
-        Giver.CheckDeath();
     }
     Giver.CheckDeath();
     Receiver.CheckDeath();
@@ -65,96 +61,47 @@ function TransferMarble(Giver: Player, Receiver: Player) {
     Challenger.hand = 0;
     Adversaire.hand = 0;
 }
-function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: string) {
+function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: number) {
 
     if (Challenger.hand == 0 || Adversaire.hand == 0) {
         return console.log("Veuillez mettre des billes dans votre main");
     }
     else {
-        if (playerTurn) {
-            console.log("Le Joueur a guess : " + choice);
-            if (choice == "pair") {
-                if (Adversaire.hand % 2 == 0) {
-                    TransferMarble(Adversaire, Challenger);
-                    playerTurn = false;
-                    return console.log("Vous avez gagné");
-                }
-                else {
-                    TransferMarble(Challenger, Adversaire);
-                    playerTurn = false;
-
-                    return console.log("Vous avez perdu");
-                }
-            }
-            else {
-                if (Adversaire.hand % 2 != 0) {
-                    TransferMarble(Adversaire, Challenger);
-                    playerTurn = false;
-
-                    return console.log("Vous avez gagné");
-                }
-                else {
-                    TransferMarble(Challenger, Adversaire);
-                    playerTurn = false;
-
-                    return console.log("Vous avez perdu");
-                }
-            }
+        if (Challenger.isAI) {
+            choice = Math.floor(Math.random() * 2);
+        }
+        if (Adversaire.hand % 2 == 0 && choice == 0) {
+            TransferMarble(Adversaire, Challenger);
+            playerTurn = !playerTurn;
+            return console.log(Challenger.name + " a gagné");
+        }
+        else if (Adversaire.hand % 2 != 0 && choice == 1) {
+            TransferMarble(Adversaire, Challenger);
+            playerTurn = !playerTurn;
+            return console.log(Challenger.name + " a gagné");
         }
         else {
-            let rnd = Math.floor(Math.random() * 2);
-            console.log("L'adversaire a guess : " + rnd);
-            if (rnd == 0) {
-                if (Adversaire.hand % 2 == 0) {
-                    playerTurn = true;
-                    TransferMarble(Challenger, Adversaire);
-                    return console.log("l'adversaire a gagné");
-                }
-                else {
-                    playerTurn = true;
-                    TransferMarble(Adversaire, Challenger);
-                    return console.log("l'adversaire a perdu");
-                }
-            }
-            else {
-                if (Adversaire.hand % 2 != 0) {
-                    TransferMarble(Challenger, Adversaire);
-                    playerTurn = true;
-
-                    return console.log("l'adversaire a gagné");
-                }
-                else {
-                    TransferMarble(Adversaire, Challenger);
-                    playerTurn = true;
-                    return console.log("l'adversaire a perdu");
-                }
-            }
+            TransferMarble(Challenger, Adversaire);
+            playerTurn = !playerTurn;
+            return console.log(Challenger.name + " a perdu");
         }
+
     }
 }
 function putMarbleInHand() {
-    
+
     if (!gameEnded) {
         Challenger.ChoseNumberOfMarbleInHand(Number(inputMarble.value));
-        if(Challenger.marbleInBag>=10)
-        {
-            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag/2) + 1);
-        }
-        else if(Challenger.marbleInBag<5)
-        {
-            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Challenger.marbleInBag) + 1);
-        }
-        else
-        {
-            Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
-        }
+        Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
         pairButton.disabled = false;
         impairButton.disabled = false;
         validateButton.disabled = true;
         inputMarble.disabled = true;
+        if (!playerTurn) {
+            CompareMarbleInHand(Adversaire, Challenger, 0);
+        }
     }
     else {
-        console.log("La partie est terminée");
         pairButton.disabled = true;
         impairButton.disabled = true;
         validateButton.disabled = true;
@@ -165,8 +112,7 @@ function MinMaxValueInInput(nb: HTMLInputElement) {
         if (parseInt(nb.value) < parseInt(nb.min)) {
             nb.value = nb.min;
             return console.log("Vous ne pouvez pas mettre moins de " + nb.min + " billes");
-        }
-        if (parseInt(nb.value) > parseInt(nb.max)) {
+        } if (parseInt(nb.value) > parseInt(nb.max)) {
             nb.value = nb.max;
             return console.log("Vous ne pouvez pas mettre plus de " + nb.max + " billes");
         }
@@ -174,14 +120,11 @@ function MinMaxValueInInput(nb: HTMLInputElement) {
 }
 function InitFunctionInDom() {
     inputMarble.addEventListener("input", () => { MinMaxValueInInput(inputMarble) });
-    pairButton.addEventListener("click", () => {
-        CompareMarbleInHand(Challenger, Adversaire, "pair");
-    });
-    impairButton.addEventListener("click", () => {
-        CompareMarbleInHand(Challenger, Adversaire, "impair");
-    });
-    validateButton.addEventListener("click", putMarbleInHand);
-    inputMarble.addEventListener("keydown", function(e) {if (invalidChars.includes(e.key)) {e.preventDefault();}});
+    pairButton.addEventListener("click", () => {CompareMarbleInHand(Challenger, Adversaire, 0);});
+    impairButton.addEventListener("click", () => {CompareMarbleInHand(Challenger, Adversaire, 1);});
+    validateButton.addEventListener("click", () => { putMarbleInHand() });
+    inputMarble.addEventListener("keydown", function (e) { if (invalidChars.includes(e.key)) { e.preventDefault(); } });
 }
 InitFunctionInDom();
+
 
