@@ -62,7 +62,7 @@ let ChosenChal;
 let ChosenEnemy;
 let ChoseChoice;
 function CompareMarbleInHand(Challenger, Adversaire, choice) {
-    if (isGuessEvenOdd && canContinue) {
+    if (isGuessEvenOdd) {
         isGuessEvenOdd = false;
         if (Challenger.hand == 0 || Adversaire.hand == 0) {
             return console.log("Veuillez mettre des billes dans votre main");
@@ -132,21 +132,23 @@ InitFunctionInDom();
 // DO NOT CALL THIS FUNCTION
 // DO NOT CALL THIS FUNCTION
 function toggleHand(classElmt) {
-    classElmt.src = (classElmt.src == "../assets/img/mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png";
-    //hide count in the hand if the hand is close
-    const handLeft = document.querySelector("img.handLeft");
-    const handRight = document.querySelector("img.handRight");
-    if (handLeft.src == "../assets/img/mainFermee.png") {
-        handLeft.style.display = "none";
-    }
-    if (handRight.src == "../assets/img/mainFermee.png") {
-        handLeft.style.display = "none";
-    }
+    console.log(classElmt.src.endsWith("mainFermee.png"));
+    classElmt.src = (classElmt.src.endsWith("mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png");
+    // //hide count in the hand if the hand is close
+    // const handLeft: any = document.querySelector("img.handLeft");
+    // const handRight: any = document.querySelector("img.handRight");
+    // if (handLeft.src == "../assets/img/mainFermee.png") {
+    //     handLeft.style.display = "none";
+    // }
+    // if (handRight.src == "../assets/img/mainFermee.png") {
+    //     handLeft.style.display = "none";
+    // }
 }
 // HIDE HAND
 function hideHand(classElmt, interval) {
     var element = document.querySelector(`img.${classElmt}`); // i defined my element
     var posHand = element.getBoundingClientRect(); // i defined my hand coordinates
+    HideDisplayMarbleNB();
     if (classElmt == "handLeft") {
         if (posHand.right > 0) {
             var newPos = parseInt(window.getComputedStyle(element).getPropertyValue('margin-left')) - 10;
@@ -222,6 +224,12 @@ function displayMarblesNb(array) {
     cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight}`;
     cntLeft.innerHTML = marblesLeft;
     cntRight.innerHTML = marblesRight;
+}
+function HideDisplayMarbleNB() {
+    const cntLeft = document.querySelector("div.cntLeft");
+    const cntRight = document.querySelector("div.cntRight");
+    cntLeft.style.display = "none";
+    cntRight.style.display = "none";
 }
 /*
            _   _ _____ __  __     ____ _____ _      _      ______  _____

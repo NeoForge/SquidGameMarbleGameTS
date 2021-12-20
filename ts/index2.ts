@@ -71,7 +71,7 @@ let playerTurn = true;
     let ChoseChoice : number;
     function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: number) {
         
-        if(isGuessEvenOdd && canContinue)
+        if(isGuessEvenOdd)
         {
             isGuessEvenOdd = false;
             if (Challenger.hand == 0 || Adversaire.hand == 0) {
@@ -219,24 +219,26 @@ let playerTurn = true;
     */
     // DO NOT CALL THIS FUNCTION
     // DO NOT CALL THIS FUNCTION
-    function toggleHand(classElmt: any): void {
-        classElmt.src = (classElmt.src == "../assets/img/mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png";
-
-        //hide count in the hand if the hand is close
-        const handLeft: any = document.querySelector("img.handLeft");
-        const handRight: any = document.querySelector("img.handRight");
-        if (handLeft.src == "../assets/img/mainFermee.png") {
-            handLeft.style.display = "none";
-        }
-        if (handRight.src == "../assets/img/mainFermee.png") {
-            handLeft.style.display = "none";
-        }
+    function toggleHand(classElmt: any,): void {
+        console.log(classElmt.src.endsWith("mainFermee.png"));
+        classElmt.src = (classElmt.src.endsWith("mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png");
+        
+        
+        // //hide count in the hand if the hand is close
+        // const handLeft: any = document.querySelector("img.handLeft");
+        // const handRight: any = document.querySelector("img.handRight");
+        // if (handLeft.src == "../assets/img/mainFermee.png") {
+        //     handLeft.style.display = "none";
+        // }
+        // if (handRight.src == "../assets/img/mainFermee.png") {
+        //     handLeft.style.display = "none";
+        // }
     }
     // HIDE HAND
     function hideHand(classElmt: any,interval : number): void {
         var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
         var posHand: any = element.getBoundingClientRect(); // i defined my hand coordinates
-
+        HideDisplayMarbleNB();
 
         if (classElmt == "handLeft") {
 
@@ -262,9 +264,8 @@ let playerTurn = true;
     function showHand(classElmt: any, changeHand: boolean,interval : number): void {
         var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
         if (changeHand) {
-            toggleHand(element);
+           toggleHand(element);
         }
-
         var moveMax: number = Math.abs(parseInt(element.getBoundingClientRect().left)) / 10;
 
         interval = window.setInterval(() => {
@@ -321,7 +322,12 @@ let playerTurn = true;
         cntLeft.innerHTML = marblesLeft;
         cntRight.innerHTML = marblesRight;
     }
-
+    function HideDisplayMarbleNB() {
+        const cntLeft: any = document.querySelector("div.cntLeft");
+        const cntRight: any = document.querySelector("div.cntRight");
+        cntLeft.style.display = "none";
+        cntRight.style.display = "none";
+    }
 
     /*
                _   _ _____ __  __     ____ _____ _      _      ______  _____ 
