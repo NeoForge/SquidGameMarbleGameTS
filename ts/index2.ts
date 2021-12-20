@@ -1,34 +1,29 @@
-
-
-
-
-
-
-
-
-
-
 window.addEventListener("load", function () {
+    
+});
 
-
-
-
-    let playerTurn = true;
+let playerTurn = true;
     let gameEnded = false;
     let pairButton = document.querySelector(".even") as HTMLButtonElement;
     let impairButton = document.querySelector(".odd") as HTMLButtonElement;
+    let interval1: any;
+    let interval2: any;
+    let canContinue = true;
+    let isGuessEvenOdd = false;
     class Player {
         name: string;
         hand: number;
         marbleInBag: number;
         isAI: boolean;
-        constructor(name: string, hand: number, marbleInBag: number, isAI: boolean) {
+        HPBar: string;
+        constructor(name: string, hand: number, marbleInBag: number, isAI: boolean, HPBar: string) {
             this.name = name;
             this.hand = hand;
             this.marbleInBag = marbleInBag;
             this.isAI = isAI;
+            this.HPBar = HPBar;
         }
-    
+
         ChoseNumberOfMarbleInHand = (nb: number) => {
             if (nb <= this.marbleInBag) {
                 this.hand = nb;
@@ -38,7 +33,7 @@ window.addEventListener("load", function () {
                 return console.log(this.name + " Vous n'avez pas assez de billes dans votre sac");
             }
         }
-    
+
         CheckDeath = () => {
             if (this.marbleInBag <= 0) {
                 gameEnded = true;
@@ -49,14 +44,16 @@ window.addEventListener("load", function () {
             }
         }
     }
-    let Challenger = new Player("Challenger", 0, 10, false);
-    let Adversaire = new Player("Adversaire", 0, 10, true);
+    let Challenger = new Player("Challenger", 0, 10, false, "barUser1");
+    let Adversaire = new Player("Adversaire", 0, 10, true, "barUser2");
     function TransferMarble(Giver: Player, Receiver: Player) {
         if (Giver.marbleInBag < Receiver.hand) {
+            removeMarbles(Giver.HPBar, Giver.marbleInBag);
             Receiver.marbleInBag += Giver.marbleInBag;
             Giver.marbleInBag = 0;
         }
         else {
+            removeMarbles(Giver.HPBar, Receiver.hand);
             Receiver.marbleInBag += Receiver.hand;
             Giver.marbleInBag -= Receiver.hand;
         }
@@ -69,54 +66,75 @@ window.addEventListener("load", function () {
         Challenger.hand = 0;
         Adversaire.hand = 0;
     }
+    let ChosenChal :Player;
+    let ChosenEnemy :Player;
+    let ChoseChoice : number;
     function CompareMarbleInHand(Challenger: Player, Adversaire: Player, choice: number) {
-        if (Challenger.hand == 0 || Adversaire.hand == 0) {
-            return console.log("Veuillez mettre des billes dans votre main");
-        }
-        else {
-            if (Challenger.isAI) {
-                choice = Math.floor(Math.random() * 2);
-            }
-            if (Adversaire.hand % 2 == 0 && choice == 0) {
-                TransferMarble(Adversaire, Challenger);
-                playerTurn = !playerTurn;
-                return console.log(Challenger.name + " a gagné");
-            }
-            else if (Adversaire.hand % 2 != 0 && choice == 1) {
-                TransferMarble(Adversaire, Challenger);
-                playerTurn = !playerTurn;
-                return console.log(Challenger.name + " a gagné");
+        
+        if(isGuessEvenOdd && canContinue)
+        {
+            isGuessEvenOdd = false;
+            if (Challenger.hand == 0 || Adversaire.hand == 0) {
+                return console.log("Veuillez mettre des billes dans votre main");
             }
             else {
-                TransferMarble(Challenger, Adversaire);
-                playerTurn = !playerTurn;
-                return console.log(Challenger.name + " a perdu");
-            }
+                if (Challenger.isAI) {
+                    choice = Math.floor(Math.random() * 2);
+                }
+                if (Adversaire.hand % 2 == 0 && choice == 0) {
+                    TransferMarble(Adversaire, Challenger);
+                    playerTurn = !playerTurn;
+                    return console.log(Challenger.name + " a gagné");
+                }
+                else if (Adversaire.hand % 2 != 0 && choice == 1) {
+                    TransferMarble(Adversaire, Challenger);
+                    playerTurn = !playerTurn;
+                    return console.log(Challenger.name + " a gagné");
+                }
+                else {
+                    TransferMarble(Challenger, Adversaire);
+                    playerTurn = !playerTurn;
+                    return console.log(Challenger.name + " a perdu");
+                }
     
+            }
+        }
+        else if(!isGuessEvenOdd && Challenger.hand > 0 && Adversaire.hand > 0)
+        {
+            console.log("On entre dans la boucle d'anim ");
+            isGuessEvenOdd =true;
+            ChosenChal=Challenger;
+            ChosenEnemy=Adversaire;
+            ChoseChoice=choice;
+            canContinue = false;
+            interval1 = window.setInterval(function () { hideHand("handRight",interval1) }, 25);
+            interval2 = window.setInterval(function () { hideHand("handLeft",interval2) }, 25);
         }
     }
-    function putMarbleInHand(nb :number) {
-    
-        if (!gameEnded) {
+    function putMarbleInHand(nb: number) {
+        if (!gameEnded && canContinue) {
             Challenger.ChoseNumberOfMarbleInHand(nb);
             Adversaire.ChoseNumberOfMarbleInHand(Math.floor(Math.random() * Adversaire.marbleInBag) + 1);
             pairButton.disabled = false;
             impairButton.disabled = false;
-            if (!playerTurn) {
-                CompareMarbleInHand(Adversaire, Challenger, 0);
-            }
+            interval1 = window.setInterval(function () { hideHand("handRight",interval1) }, 25);
+            interval2 = window.setInterval(function () { hideHand("handLeft",interval2) }, 25);
+            canContinue = false;
         }
         else {
             pairButton.disabled = true;
             impairButton.disabled = true;
         }
     }
+
+
+
     function InitFunctionInDom() {
-        pairButton.addEventListener("click", () => {CompareMarbleInHand(Challenger, Adversaire, 0);});
-        impairButton.addEventListener("click", () => {CompareMarbleInHand(Challenger, Adversaire, 1);});
+        pairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, 0); });
+        impairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, 1); });
     }
     InitFunctionInDom();
-    
+
 
 
 
@@ -200,12 +218,22 @@ window.addEventListener("load", function () {
                                                                     
     */
     // DO NOT CALL THIS FUNCTION
+    // DO NOT CALL THIS FUNCTION
     function toggleHand(classElmt: any): void {
         classElmt.src = (classElmt.src == "../assets/img/mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png";
-    }
 
+        //hide count in the hand if the hand is close
+        const handLeft: any = document.querySelector("img.handLeft");
+        const handRight: any = document.querySelector("img.handRight");
+        if (handLeft.src == "../assets/img/mainFermee.png") {
+            handLeft.style.display = "none";
+        }
+        if (handRight.src == "../assets/img/mainFermee.png") {
+            handLeft.style.display = "none";
+        }
+    }
     // HIDE HAND
-    function hideHand(classElmt: any): void {
+    function hideHand(classElmt: any,interval : number): void {
         var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
         var posHand: any = element.getBoundingClientRect(); // i defined my hand coordinates
 
@@ -217,7 +245,7 @@ window.addEventListener("load", function () {
                 element.style.marginLeft = newPos + "px";
             } else {
                 clearInterval(interval);
-                showHand(classElmt, true);  // SHOW AGAIN THE HAND
+                showHand(classElmt, true,interval);  // SHOW AGAIN THE HAND
             }
         } else {
             if (posHand.left < window.screen.width) {
@@ -225,13 +253,13 @@ window.addEventListener("load", function () {
                 element.style.marginRight = newPos + "px";
             } else {
                 clearInterval(interval);
-                showHand(classElmt, true); // SHOW AGAIN THE HAND
+                showHand(classElmt, true,interval); // SHOW AGAIN THE HAND
             }
         }
     }
 
     // DO NOT CALL THIS FUNCTION
-    function showHand(classElmt: any, changeHand: boolean): void {
+    function showHand(classElmt: any, changeHand: boolean,interval : number): void {
         var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
         if (changeHand) {
             toggleHand(element);
@@ -247,6 +275,12 @@ window.addEventListener("load", function () {
                     element.style.marginLeft = newPos + "px";
                 } else {
                     clearInterval(interval);
+                    console.log(interval);
+                    if(isGuessEvenOdd){
+                        displayMarblesNb([Challenger.hand, Adversaire.hand]);
+                        CompareMarbleInHand(ChosenChal, ChosenEnemy, ChoseChoice);
+                    }
+                    canContinue = true;
                 }
             } else {
 
@@ -258,6 +292,34 @@ window.addEventListener("load", function () {
                 }
             }
         }, 50);
+    }
+    function displayMarblesNb(array: number[]) {
+        const handLeft: any = document.querySelector("img.handLeft");
+        const handRight: any = document.querySelector("img.handRight");
+
+        const cntLeft: any = document.querySelector("div.cntLeft");
+        const cntRight: any = document.querySelector("div.cntRight");
+
+        var marblesLeft = array[0];
+        var marblesRight = array[1];
+
+        var handPosLeft: any = handLeft.getBoundingClientRect();
+        var handPosRight: any = handRight.getBoundingClientRect();
+
+        var ctrHandLeft = (handPosLeft.right - handPosLeft.left) / 3;
+        var middleHandLeft = handPosLeft.top + ((handPosLeft.bottom - handPosLeft.top) / 3);
+
+        var ctrHandRight = (handPosRight.right - handPosRight.left) / 2;
+        var middleHandRight = handPosRight.top + ((handPosRight.bottom - handPosRight.top) / 2);
+
+        const cntBgLeft = "background: url('../assets/img/bille-1.png') no-repeat;background-size: contain;"
+        const cntBgRight = "background: url('../assets/img/bille-2.png') no-repeat;background-size: contain;"
+
+        cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft};`;
+        cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight}`;
+
+        cntLeft.innerHTML = marblesLeft;
+        cntRight.innerHTML = marblesRight;
     }
 
 
@@ -288,6 +350,7 @@ window.addEventListener("load", function () {
                     bille.remove();
                     addMarbles(barUserClass);
                     clearInterval(anim);
+                    SelectNumberOfBille();
                 }
             }, 50);
         });
@@ -318,20 +381,42 @@ window.addEventListener("load", function () {
         }, 50);
     }
 
-    var interval: any ;//= window.setInterval(function () { hideHand("handRight") }, 25); // HIDE HAND
+    // = window.setInterval(function () { hideHand("handRight") }, 25); // HIDE HAND
 
     function SelectNumberOfBille() {
+
         let arrayOfBillesUser1 = document.querySelectorAll(`div.barUser1 img`);
         for (let i = 0; i < arrayOfBillesUser1.length; i++) {
-            arrayOfBillesUser1[i].addEventListener('click', function () {
-                removeMarbles("barUser1", i + 1);
-                putMarbleInHand(i+1);
-            });
+            arrayOfBillesUser1[i].removeEventListener('click', () => { ClickBilleOnUserBar });
+        }
+        for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+            arrayOfBillesUser1[i].addEventListener('click', () => { ClickBilleOnUserBar(i + 1) });
         }
         return null;
 
     }
+    function ClickBilleOnUserBar(nb: number) {
+        //removeMarbles("barUser1",nb);
+        putMarbleInHand(nb);
+    }
     SelectNumberOfBille();
 
-});
+    
+    function CheckGameState() {
+        if (!canContinue) {
+            pairButton.disabled = true;
+            impairButton.disabled = true;
+        }
+        else
+        {
+            if(!playerTurn)
+            {
+                CompareMarbleInHand(Adversaire, Challenger, 0);
+            }
+            pairButton.disabled = false;
+            impairButton.disabled = false;
+        }
+    }
 
+
+    let intervalGameState = window.setInterval(function () { CheckGameState() }, 100);

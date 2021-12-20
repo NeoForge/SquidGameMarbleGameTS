@@ -6,6 +6,13 @@ html {
     font-family: DotGothic16, sans-serif;
     font-size: 20px;
     font-weight: bold;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
   }
   
   div.bg {
@@ -22,7 +29,7 @@ html {
   }
   
   div.progressBar {
-    z-index: 20;
+    z-index: 50;
     display: inline-block;
     position: fixed;
     top: 0px;
