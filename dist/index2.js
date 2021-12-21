@@ -260,6 +260,7 @@ function removeMarbles(barUserClass, nb) {
                 addMarbles(barUserClass);
                 clearInterval(anim);
                 SelectNumberOfBille();
+                addHoverOnBille();
             }
         }, 50);
     });
@@ -305,6 +306,26 @@ function ClickBilleOnUserBar(nb) {
     putMarbleInHand(nb);
 }
 SelectNumberOfBille();
+addHoverOnBille();
+function addHoverOnBille() {
+    let arrayOfBillesUser1 = document.querySelectorAll(`div.barUser1 img`);
+    for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+        let temp = arrayOfBillesUser1[i];
+        temp.removeEventListener('mouseenter', () => { RotateBille(temp); });
+        temp.removeEventListener('mouseleave', () => { clearRotate(temp); });
+    }
+    for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+        let temp = arrayOfBillesUser1[i];
+        temp.addEventListener('mouseenter', () => { RotateBille(temp); });
+        temp.addEventListener('mouseleave', () => { clearRotate(temp); });
+    }
+}
+function RotateBille(temp) {
+    temp.style.cssText = "transform: rotate(360deg); transition:all 100ms ease-in-out;";
+}
+function clearRotate(temp) {
+    temp.style.cssText = "";
+}
 function CheckGameState() {
     if (!canContinue) {
         pairButton.disabled = true;

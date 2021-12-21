@@ -357,6 +357,7 @@ let playerTurn = true;
                     addMarbles(barUserClass);
                     clearInterval(anim);
                     SelectNumberOfBille();
+                    addHoverOnBille();
                 }
             }, 50);
         });
@@ -406,8 +407,33 @@ let playerTurn = true;
         putMarbleInHand(nb);
     }
     SelectNumberOfBille();
+    addHoverOnBille();
 
-    
+    function addHoverOnBille()
+    {
+        let arrayOfBillesUser1 = document.querySelectorAll(`div.barUser1 img`);
+        for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+            let temp = arrayOfBillesUser1[i] as HTMLElement;
+            temp.removeEventListener('mouseenter', () => { RotateBille(temp) });
+            temp.removeEventListener('mouseleave', () => { clearRotate(temp) });
+        }
+        for (let i = 0; i < arrayOfBillesUser1.length; i++) {
+            let temp = arrayOfBillesUser1[i] as HTMLElement;
+            temp.addEventListener('mouseenter', () => { RotateBille(temp) });
+            temp.addEventListener('mouseleave', () => { clearRotate(temp) });
+        }
+    }
+    function RotateBille(temp : any)
+    {
+        temp.style.cssText = "transform: rotate(360deg); transition:all 100ms ease-in-out;"
+    }
+    function clearRotate(temp: any) {
+        temp.style.cssText = "";
+    }
+
+
+
+
     function CheckGameState() {
         if (!canContinue) {
             pairButton.disabled = true;

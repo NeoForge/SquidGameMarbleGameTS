@@ -14,7 +14,12 @@ html {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
   }
-  
+
+.billeUser
+{
+  cursor: pointer;
+}
+
   div.bg {
     position: fixed;
     top: 0px;
