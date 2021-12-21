@@ -37,6 +37,18 @@ let playerTurn = true;
         CheckDeath = () => {
             if (this.marbleInBag <= 0) {
                 gameEnded = true;
+                // end screen
+                console.log(">>>>keep: "+document.querySelectorAll('div.barUser1 img').length + " VS " + document.querySelectorAll('div.barUser2 img').length);
+                
+                if(!this.isAI){
+                    console.log("j'ai perdu");
+                    
+                    fullscreenM("loose");
+                }else{
+                    console.log("j'ai gagner");
+                    
+                    fullscreenM("win");  
+                }
                 return console.log(this.name + " est mort");
             }
             else {
@@ -203,7 +215,30 @@ let playerTurn = true;
 
 
 
+    function closeFullscreen(){
+        const fullscreen:any = document.querySelector(".fullscreen");
+        fullscreen.style.display = "none";
+    }
 
+    function fullscreenM(value:string){
+        const fullscreen:any = document.querySelector(".fullscreen");
+        const fullscreenC:any = document.querySelector(".fullscreen .content");
+        fullscreen.style.display = "";
+
+        if(value=="win"){
+            fullscreenC.innerHTML = "<h1>Congratulation !</h1>";
+            var folder = "congrates";
+        }else{
+            fullscreenC.innerHTML = "<h1>Game over bro' !</h1>";
+            var folder = "looser";
+        }
+
+        const gif:string[] = ["usa", "russia", "kim"];
+        const random:number = Math.floor(Math.random() *  gif.length);
+        const img:string = `<img src='../assets/img/${folder}/${gif[random]}.gif' /><br><button onclick="location.reload();">Restart</button>`;
+
+        fullscreenC.innerHTML += img;
+    }
 
 
 
@@ -223,16 +258,6 @@ let playerTurn = true;
         console.log(classElmt.src.endsWith("mainFermee.png"));
         classElmt.src = (classElmt.src.endsWith("mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png");
         
-        
-        // //hide count in the hand if the hand is close
-        // const handLeft: any = document.querySelector("img.handLeft");
-        // const handRight: any = document.querySelector("img.handRight");
-        // if (handLeft.src == "../assets/img/mainFermee.png") {
-        //     handLeft.style.display = "none";
-        // }
-        // if (handRight.src == "../assets/img/mainFermee.png") {
-        //     handLeft.style.display = "none";
-        // }
     }
     // HIDE HAND
     function hideHand(classElmt: any,interval : number): void {
@@ -357,6 +382,7 @@ let playerTurn = true;
                     addMarbles(barUserClass);
                     clearInterval(anim);
                     SelectNumberOfBille();
+
                 }
             }, 50);
         });

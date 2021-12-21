@@ -14,7 +14,24 @@ html {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
   }
-  
+  div.fullscreen{
+    display:block;
+    z-index:99999999999;
+    position: fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color:#fff;
+    text-align: center;
+    overflow-y: auto;
+  }
+  div.fullscreen div.left{
+    margin-top:10px;
+    text-align: left;
+    padding:8px;
+  }
   div.bg {
     position: fixed;
     top: 0px;
@@ -90,7 +107,7 @@ html {
     justify-content: center;
   }
   
-  div.inputs input, div.inputs button {
+  div.inputs input, div.inputs button, .fullscreen button {
     font-size: 35px;
     outline: none;
     border: 0px;
@@ -102,7 +119,7 @@ html {
     margin-left: 10px;
   }
   
-  div.inputs button {
+  button {
     background: url(../assets/img/bgBtn.png?h=33a8d1371501f0bf099dc40a5f4b0982);
     background-repeat: no-repeat;
     background-size: 100% 100%;

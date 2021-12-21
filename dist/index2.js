@@ -23,6 +23,16 @@ class Player {
         this.CheckDeath = () => {
             if (this.marbleInBag <= 0) {
                 gameEnded = true;
+                // end screen
+                console.log(">>>>keep: " + document.querySelectorAll('div.barUser1 img').length + " VS " + document.querySelectorAll('div.barUser2 img').length);
+                if (!this.isAI) {
+                    console.log("j'ai perdu");
+                    fullscreenM("loose");
+                }
+                else {
+                    console.log("j'ai gagner");
+                    fullscreenM("win");
+                }
                 return console.log(this.name + " est mort");
             }
             else {
@@ -119,6 +129,27 @@ function InitFunctionInDom() {
     impairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, 1); });
 }
 InitFunctionInDom();
+function closeFullscreen() {
+    const fullscreen = document.querySelector(".fullscreen");
+    fullscreen.style.display = "none";
+}
+function fullscreenM(value) {
+    const fullscreen = document.querySelector(".fullscreen");
+    const fullscreenC = document.querySelector(".fullscreen .content");
+    fullscreen.style.display = "";
+    if (value == "win") {
+        fullscreenC.innerHTML = "<h1>Congratulation !</h1>";
+        var folder = "congrates";
+    }
+    else {
+        fullscreenC.innerHTML = "<h1>Game over bro' !</h1>";
+        var folder = "looser";
+    }
+    const gif = ["usa", "russia", "kim"];
+    const random = Math.floor(Math.random() * gif.length);
+    const img = `<img src='../assets/img/${folder}/${gif[random]}.gif' /><br><button onclick="location.reload();">Restart</button>`;
+    fullscreenC.innerHTML += img;
+}
 /*
            _   _ _____ __  __      _    _          _   _ _____
      /\   | \ | |_   _|  \/  |    | |  | |   /\   | \ | |  __ \
@@ -134,15 +165,6 @@ InitFunctionInDom();
 function toggleHand(classElmt) {
     console.log(classElmt.src.endsWith("mainFermee.png"));
     classElmt.src = (classElmt.src.endsWith("mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png");
-    // //hide count in the hand if the hand is close
-    // const handLeft: any = document.querySelector("img.handLeft");
-    // const handRight: any = document.querySelector("img.handRight");
-    // if (handLeft.src == "../assets/img/mainFermee.png") {
-    //     handLeft.style.display = "none";
-    // }
-    // if (handRight.src == "../assets/img/mainFermee.png") {
-    //     handLeft.style.display = "none";
-    // }
 }
 // HIDE HAND
 function hideHand(classElmt, interval) {
