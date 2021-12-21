@@ -55,7 +55,7 @@ let playerTurn = true;
                 return console.log(this.name + " est vivant");
             }
         }
-    }
+    } 
     let Challenger = new Player("Challenger", 0, 10, false, "barUser1");
     let Adversaire = new Player("Adversaire", 0, 10, true, "barUser2");
     function TransferMarble(Giver: Player, Receiver: Player) {
@@ -138,9 +138,6 @@ let playerTurn = true;
             impairButton.disabled = true;
         }
     }
-
-
-
     function InitFunctionInDom() {
         pairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, 0); });
         impairButton.addEventListener("click", () => { CompareMarbleInHand(Challenger, Adversaire, 1); });
@@ -332,17 +329,17 @@ let playerTurn = true;
         var handPosLeft: any = handLeft.getBoundingClientRect();
         var handPosRight: any = handRight.getBoundingClientRect();
 
-        var ctrHandLeft = (handPosLeft.right - handPosLeft.left) / 3;
-        var middleHandLeft = handPosLeft.top + ((handPosLeft.bottom - handPosLeft.top) / 3);
+        var ctrHandLeft = (handPosLeft.right - handPosLeft.left) / 2.3; //Horizontal
+        var middleHandLeft = handPosLeft.top + ((handPosLeft.bottom - handPosLeft.top) / 2.5);//Vertical
 
-        var ctrHandRight = (handPosRight.right - handPosRight.left) / 2;
+        var ctrHandRight = (handPosRight.right - handPosRight.left) / 3;
         var middleHandRight = handPosRight.top + ((handPosRight.bottom - handPosRight.top) / 2);
 
         const cntBgLeft = "background: url('../assets/img/bille-1.png') no-repeat;background-size: contain;"
         const cntBgRight = "background: url('../assets/img/bille-2.png') no-repeat;background-size: contain;"
 
-        cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft};`;
-        cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight}`;
+        cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft}; transform: scale(2);`;
+        cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight};transform: scale(2);`;
 
         cntLeft.innerHTML = marblesLeft;
         cntRight.innerHTML = marblesRight;
