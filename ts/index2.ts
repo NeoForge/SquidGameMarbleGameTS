@@ -6,8 +6,8 @@ let playerTurn = true;
     let gameEnded = false;
     let pairButton = document.querySelector(".even") as HTMLButtonElement;
     let impairButton = document.querySelector(".odd") as HTMLButtonElement;
-    let interval1: any;
-    let interval2: any;
+    let interval1: number;
+    let interval2: number;
     let canContinue = true;
     let isGuessEvenOdd = false;
     class Player {
@@ -213,13 +213,13 @@ let playerTurn = true;
 
 
     function closeFullscreen(){
-        const fullscreen:any = document.querySelector(".fullscreen");
+        const fullscreen = document.querySelector(".fullscreen") as HTMLElement;
         fullscreen.style.display = "none";
     }
 
     function fullscreenM(value:string){
-        const fullscreen:any = document.querySelector(".fullscreen");
-        const fullscreenC:any = document.querySelector(".fullscreen .content");
+        const fullscreen = document.querySelector(".fullscreen") as HTMLElement;
+        const fullscreenC = document.querySelector(".fullscreen .content") as HTMLElement;
         fullscreen.style.display = "";
 
         if(value=="win"){
@@ -251,15 +251,15 @@ let playerTurn = true;
     */
     // DO NOT CALL THIS FUNCTION
     // DO NOT CALL THIS FUNCTION
-    function toggleHand(classElmt: any,): void {
+    function toggleHand(classElmt: HTMLImageElement,): void {
         console.log(classElmt.src.endsWith("mainFermee.png"));
         classElmt.src = (classElmt.src.endsWith("mainFermee.png") ? "../assets/img/mainOuverte.png" : "../assets/img/mainFermee.png");
         
     }
     // HIDE HAND
-    function hideHand(classElmt: any,interval : number): void {
-        var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
-        var posHand: any = element.getBoundingClientRect(); // i defined my hand coordinates
+    function hideHand(classElmt: string,interval : number): void {
+        var element = document.querySelector(`img.${classElmt}`) as HTMLImageElement; // i defined my element
+        var posHand = element.getBoundingClientRect(); // i defined my hand coordinates
         HideDisplayMarbleNB();
 
         if (classElmt == "handLeft") {
@@ -283,15 +283,15 @@ let playerTurn = true;
     }
 
     // DO NOT CALL THIS FUNCTION
-    function showHand(classElmt: any, changeHand: boolean,interval : number): void {
-        var element: any = document.querySelector(`img.${classElmt}`); // i defined my element
+    function showHand(classElmt: string, changeHand: boolean,interval : number): void {
+        var element = document.querySelector(`img.${classElmt}`) as HTMLImageElement; // i defined my element
         if (changeHand) {
            toggleHand(element);
         }
-        var moveMax: number = Math.abs(parseInt(element.getBoundingClientRect().left)) / 10;
+        var moveMax = Math.abs(element.getBoundingClientRect().left) / 10;
 
         interval = window.setInterval(() => {
-            var posHand: any = element.getBoundingClientRect(); // i defined my hand coordinates
+            var posHand = element.getBoundingClientRect(); // i defined my hand coordinates
             if (classElmt == "handLeft") {
                 if (posHand.left <= -10) {
                     var newPos: number = parseInt(window.getComputedStyle(element).getPropertyValue('margin-left')) + 10;
@@ -317,17 +317,17 @@ let playerTurn = true;
         }, 50);
     }
     function displayMarblesNb(array: number[]) {
-        const handLeft: any = document.querySelector("img.handLeft");
-        const handRight: any = document.querySelector("img.handRight");
+        const handLeft = document.querySelector("img.handLeft") as HTMLImageElement;
+        const handRight = document.querySelector("img.handRight") as HTMLImageElement;
 
-        const cntLeft: any = document.querySelector("div.cntLeft");
-        const cntRight: any = document.querySelector("div.cntRight");
+        const cntLeft = document.querySelector("div.cntLeft") as HTMLElement;
+        const cntRight = document.querySelector("div.cntRight") as HTMLElement;
 
         var marblesLeft = array[0];
         var marblesRight = array[1];
 
-        var handPosLeft: any = handLeft.getBoundingClientRect();
-        var handPosRight: any = handRight.getBoundingClientRect();
+        var handPosLeft = handLeft.getBoundingClientRect();
+        var handPosRight = handRight.getBoundingClientRect();
 
         var ctrHandLeft = (handPosLeft.right - handPosLeft.left) / 2.3; //Horizontal
         var middleHandLeft = handPosLeft.top + ((handPosLeft.bottom - handPosLeft.top) / 2.5);//Vertical
@@ -341,12 +341,12 @@ let playerTurn = true;
         cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft}; transform: scale(2);`;
         cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight};transform: scale(2);`;
 
-        cntLeft.innerHTML = marblesLeft;
-        cntRight.innerHTML = marblesRight;
+        cntLeft.innerHTML = marblesLeft.toString();
+        cntRight.innerHTML = marblesRight.toString();
     }
     function HideDisplayMarbleNB() {
-        const cntLeft: any = document.querySelector("div.cntLeft");
-        const cntRight: any = document.querySelector("div.cntRight");
+        const cntLeft = document.querySelector("div.cntLeft") as HTMLElement;
+        const cntRight = document.querySelector("div.cntRight") as HTMLElement;
         cntLeft.style.display = "none";
         cntRight.style.display = "none";
     }
@@ -363,11 +363,11 @@ let playerTurn = true;
     */
     function removeMarbles(barUserClass: string, nb: number) {
         if (barUserClass == "barUser2") {
-            var billeList: any = document.querySelectorAll(`div.${barUserClass} img:nth-child(-n+${nb})`);
+            var billeList = document.querySelectorAll(`div.${barUserClass} img:nth-child(-n+${nb})`);
         } else {
-            var billeList: any = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
+            var billeList = document.querySelectorAll(`div.${barUserClass} img:nth-last-child(-n+${nb})`);
         }
-        billeList.forEach(function (bille: any) {
+        billeList.forEach(function (bille:any) {
             bille.style.cssText = "transform: rotate(360deg); transition:all 100ms ease-in-out;";
             bille.style.opacity = "0.9";
             var anim = setInterval(function () {
@@ -389,16 +389,16 @@ let playerTurn = true;
     // DO NOT CALL THIS FUNCTION
     function addMarbles(barUserClass: string) {
         if (barUserClass == "barUser2") {
-            var billeUser: any = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
-            var node: any = document.querySelector(`div.barUser1`);
+            var billeUser = document.querySelector(`div.${barUserClass} img:nth-last-child(-n+1)`); // i select last marble
+            var node = document.querySelector(`div.barUser1`) as HTMLElement;
             node.innerHTML += '<img class="billeUser hiddenMarbles" src="../assets/img/bille-1.png" style="opacity:0.1;transition:all 50ms ease-in-out;">';
         } else {
-            var billeUser: any = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
-            var node: any = document.querySelector(`div.barUser2`);
+            var billeUser = document.querySelector(`div.${barUserClass} img:nth-child(n+1)`); // i select last marble
+            var node = document.querySelector(`div.barUser2`) as HTMLElement;
             node.innerHTML = '<img class="billeUser hiddenMarbles" src="../assets/img/bille-2.png" style="opacity:0.1;transition:all 50ms ease-in-out;">' + node.innerHTML;
         }
-        var intervalDisplayM: any = setInterval(function () {
-            var hiddenMarbles: any = document.querySelectorAll(".hiddenMarbles");
+        var intervalDisplayM = setInterval(function () {
+            var hiddenMarbles = document.querySelectorAll(".hiddenMarbles");
             hiddenMarbles.forEach(function (bille: any) {
                 if (parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity')) <= 0.9) {
                     bille.style.opacity = parseFloat(window.getComputedStyle(bille).getPropertyValue('opacity')) + 0.1;
@@ -445,11 +445,11 @@ let playerTurn = true;
             temp.addEventListener('mouseleave', () => { clearRotate(temp) });
         }
     }
-    function RotateBille(temp : any)
+    function RotateBille(temp : HTMLElement)
     {
         temp.style.cssText = "transform: rotate(360deg); transition:all 100ms ease-in-out;"
     }
-    function clearRotate(temp: any) {
+    function clearRotate(temp: HTMLElement) {
         temp.style.cssText = "";
     }
 

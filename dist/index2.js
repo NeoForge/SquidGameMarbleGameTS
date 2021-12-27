@@ -198,7 +198,7 @@ function showHand(classElmt, changeHand, interval) {
     if (changeHand) {
         toggleHand(element);
     }
-    var moveMax = Math.abs(parseInt(element.getBoundingClientRect().left)) / 10;
+    var moveMax = Math.abs(element.getBoundingClientRect().left) / 10;
     interval = window.setInterval(() => {
         var posHand = element.getBoundingClientRect(); // i defined my hand coordinates
         if (classElmt == "handLeft") {
@@ -244,8 +244,8 @@ function displayMarblesNb(array) {
     const cntBgRight = "background: url('../assets/img/bille-2.png') no-repeat;background-size: contain;";
     cntLeft.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandLeft}px;left:${ctrHandLeft}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgLeft}; transform: scale(2);`;
     cntRight.style.cssText = `display:block;position:fixed;z-index:999;top:${middleHandRight}px;right:${ctrHandRight}px;color:#fff !important;font-size:48px;width: 128px; height: auto;padding-left: 14px;padding-bottom:3px;${cntBgRight};transform: scale(2);`;
-    cntLeft.innerHTML = marblesLeft;
-    cntRight.innerHTML = marblesRight;
+    cntLeft.innerHTML = marblesLeft.toString();
+    cntRight.innerHTML = marblesRight.toString();
 }
 function HideDisplayMarbleNB() {
     const cntLeft = document.querySelector("div.cntLeft");
